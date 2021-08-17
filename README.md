@@ -15,7 +15,20 @@ Run following commands:
 
 ```
 npm install --save
+```
 
+If you haven't installed Angular Cli. Run the following Command:
+Install local:
+```
+npm instal @angular/cli
+```
+Install globaly:
+```
+npm install -g @angular/cli
+```
+
+At the end run the following command:
+```
 ng serve
 ```
 
