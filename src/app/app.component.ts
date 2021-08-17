@@ -13,8 +13,8 @@ export class AppComponent  implements OnInit {
   settings: boolean;
   board: boolean;
   turn: string;
-  xbg: string = "url('x.png')";
-  obg: string = "url('o.png')";
+  xbg: string = "url('assets/image/x.png')";
+  obg: string = "url('assets/image/o.png')";
   plot1: boolean;
   plot2: boolean;
   plot3: boolean;
