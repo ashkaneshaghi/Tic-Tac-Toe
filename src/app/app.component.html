@@ -63,22 +63,21 @@
     <button type="button" value="start" (click)="initializingame($event)">Start</button>
   </div>
 
-  <div *ngIf="board" class="game-screen" >
+  <div *ngIf="settings" class="game-screen" >
     <div class="scoreboard">
       <span class="sub-scoreboard-left" [style.background-color]="turn === sign ? 'lightskyblue' : 'white'">Palyer 1 <br />{{sign}}</span>
       <span class="sub-scoreboard-right" [style.background-color]="turn === sign ? 'white' : 'lightskyblue'">{{opponent}} <br />{{sign2}}</span>
     </div>
     <div class="game-board-src">
-      <span class="game-board">
-        <button name="plot1" [style.background-image]="plot1bg" class="button" [disabled]="plot1 ? true : false" (click)="action('plot1')"></button>
-        <button name="plot2" [style.background-image]="plot2bg" class="button" [disabled]="plot2 ? true : false" (click)="action('plot2')"></button>
-        <button name="plot3" [style.background-image]="plot3bg" class="button" [disabled]="plot3 ? true : false" (click)="action('plot3')"></button>
-        <button name="plot4" [style.background-image]="plot4bg" class="button" [disabled]="plot4 ? true : false" (click)="action('plot4')"></button>
-        <button name="plot5" [style.background-image]="plot5bg" class="button" [disabled]="plot5 ? true : false" (click)="action('plot5')"></button>
-        <button name="plot6" [style.background-image]="plot6bg" class="button" [disabled]="plot6 ? true : false" (click)="action('plot6')"></button>
-        <button name="plot7" [style.background-image]="plot7bg" class="button" [disabled]="plot7 ? true : false" (click)="action('plot7')"></button>
-        <button name="plot8" [style.background-image]="plot8bg" class="button" [disabled]="plot8 ? true : false" (click)="action('plot8')"></button>
-        <button name="plot9" [style.background-image]="plot9bg" class="button" [disabled]="plot9 ? true : false" (click)="action('plot9')"></button>
+      <span class="game-board" >
+        <button 
+        *ngFor="let field of gameBoardAttr" 
+        name="{{field.fieldName}}" 
+        style.background-image="{{field.fieldBackground}}" 
+        class="button" 
+        [disabled]="field.fieldStatus ? true : false" 
+        (click)="action(field.fieldName)"
+        ></button>
       </span>
     </div>
     <div class="restart">
