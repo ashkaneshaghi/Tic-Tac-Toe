@@ -7,271 +7,170 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent  implements OnInit {
+// Global Variables   
   title = 'Tic Tac Toe';
-  opponent: string;
-  sign: string;
-  sign2: string;
-  settings: boolean;
-  board: boolean;
-  turn: string;
-
+  isOpponentComputer: boolean = true;
+  opponentName: string = 'Computer';
+  playerSign: string = "x";
+  opponentSign: string = "o";
+  settings: boolean = true;
+  turn: string = "x";
+  isWinner: boolean = false;
+  winnerSide:string = '';
+  numberOfMoves: number = 0;
   gameBoardAttr: Array<FieldAttr> = [];
-
   xbg: string = "url('assets/image/x.png')";
   obg: string = "url('assets/image/o.png')";
 
 
   constructor(){
-    this.opponent = "Computer"
-    this.sign = "x";
-    this.sign2 = "o";
-    this.settings = true;
-    this.board = false;
-    this.turn = "x";
     this.initialGameBoard();
+  }
+
+  defaultValue() {
+    this.isOpponentComputer = true;
+    this.opponentName = 'Computer';
+    this.playerSign = "x";
+    this.opponentSign = "o";
+    this.settings = true;
+    this.turn = "x";
+    for (let i = 0; i <= 8; i++) {
+      this.gameBoardAttr[i].fieldBackground = '';
+      this.gameBoardAttr[i].fieldStatus = false
+    }
+    this.winnerSide = '';
+    this.isWinner = false;
+    this.numberOfMoves = 0;
   }
   
   ngOnInit() {
   }
 
   initialGameBoard(){
-    for (let i = 1; i <= 9; i++) {
+    for (let i = 0; i <= 8; i++) {
       let field: FieldAttr = new FieldAttr();
-      field.fieldName = field.fieldName + i.toString();
-      field.fieldBackground = field.fieldBackground
+      field.fieldName = field.fieldName + (i + 1).toString();
+      field.fieldBackground = field.fieldBackground;
       field.fieldStatus = field.fieldStatus;
       this.gameBoardAttr.push(field);
     }
   }
 
-  initializingame(event: any) {
-    let name = event.target.value;
-    this.sign2 = (this.sign === "x") ? "o" : "x";
-    if(name === "start") {
-      this.settings = false;
-      this.board = true;
-      // this.turnCheck();
-
-  
-      }
-    else {
-      this.opponent = "Computer"
-      this.sign = "x";
-      this.sign2 = "o";
-      this.settings = true;
-      this.board = false;
-      this.turn = "x";
-  
+  initializinGame(event: any) {
+    let eventName = event.target.name;
+    if (eventName === "start") {
+      this.settings = !this.settings;
+      this.nextTurnCheck();
+    } else {
+      this.defaultValue();
     }
   }
 
   gameSetting(event: any) {
-    (event.target.name === "player") ? this.opponent = event.target.value
-    : (event.target.name === "sign") ? this.sign = event.target.value 
-    : this.turn = event.target.value;
-
+    let eventName = event.target.name;
+    let eventValue = event.target.value;
+    if (eventName === "player decider") {
+      this.opponentName = eventValue;
+      if (eventValue === "Player 2") {
+        this.isOpponentComputer = false;
+      } else {
+        this.isOpponentComputer = true;
+      }
+    } else if (eventName === "sign") {
+      this.playerSign = eventValue;
+      this.opponentSign = (this.playerSign === "x") ? "o" : "x";
+    } else if (eventName === "turn") {
+      this.turn = eventValue;
+    }
   }
 
-  // computerTurn() {
-  //   let randomNum = this.randomNum();
-  //   switch (randomNum) {
-  //     case 1:
-  //       if (this.plot1) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot1');
-  //         break;
-  //       }
-  //     case 2:
-  //       if (this.plot2) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot2');
-  //         break;
-  //       }
-  //     case 3:
-  //       if (this.plot3) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot3');
-  //         break;
-  //       }
-  //     case 4:
-  //       if (this.plot4) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot4');
-  //         break;
-  //       }
-  //     case 5:
-  //       if (this.plot5) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot5');
-  //         break;
-  //       }
-  //     case 6:
-  //       if (this.plot6) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot6');
-  //         break;
-  //       }
-  //     case 7:
-  //       if (this.plot7) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot7');
-  //         break;
-  //       }
-  //     case 8:
-  //       if (this.plot8) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot8');
-  //         break;
-  //       }
-  //     case 9:
-  //       if (this.plot9) {
-  //         this.computerTurn();
-  //         break;
-  //       } else {
-  //         this.action('plot9');
-  //         break;
-  //       }
-    
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  action(plot: string) {
-  //   let bg: string = (this.turn === "x") ? this.xbg : this.obg;
-  //     switch (plot) {
-  //       case "plot1":
-  //         this.plot1 = true;
-  //         this.plot1bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot2":
-  //         this.plot2 = true;
-  //         this.plot2bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot3":
-  //         this.plot3 = true;
-  //         this.plot3bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot4":
-  //         this.plot4 = true;
-  //         this.plot4bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot5":
-  //         this.plot5 = true;
-  //         this.plot5bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot6":
-  //         this.plot6 = true;
-  //         this.plot6bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot7":
-  //         this.plot7 = true;
-  //         this.plot7bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot8":
-  //         this.plot8 = true;
-  //         this.plot8bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-  //       case "plot9":
-  //         this.plot9 = true;
-  //         this.plot9bg = bg;
-  //         this.gameStatusCheck();
-  //         this.turnToggle();
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-  //   this.turnCheck();
+  action(field: FieldAttr) {
+    let fieldData = field;
+    let index = this.gameBoardAttr.findIndex( x => x.fieldName === fieldData.fieldName);
+    this.gameBoardAttr[index].fieldBackground = this.backgroundCheck();
+    this.gameBoardAttr[index].fieldStatus = !this.gameBoardAttr[index].fieldStatus;
+    this.numberOfMoves++;
+    this.turnToggle();
+    this.gameStatusCheck();
+    this.nextTurnCheck();
   }
 
-  // turnCheck() {
-  //   if (!(this.plot1 && this.plot2 && this.plot3 && this.plot4 && this.plot5 && this.plot6 && this.plot7 && this.plot8 && this.plot9 === true)) {
-  //     if (this.opponent === "Computer") {
-  //       if (this.sign2 === this.turn) {
-  //         this.computerTurn();
-  //       }
-  //     }
-  //   }
-  // }
-
-  // gameStatusCheck() {
-  //     if (
-  //       (this.plot1bg === this.xbg && this.plot2bg === this.xbg && this.plot3bg === this.xbg) || 
-  //       (this.plot4bg === this.xbg && this.plot5bg === this.xbg && this.plot6bg === this.xbg) || 
-  //       (this.plot7bg === this.xbg && this.plot8bg === this.xbg && this.plot9bg === this.xbg) ||
-  //       (this.plot1bg === this.xbg && this.plot4bg === this.xbg && this.plot7bg === this.xbg) ||
-  //       (this.plot2bg === this.xbg && this.plot5bg === this.xbg && this.plot8bg === this.xbg) ||
-  //       (this.plot3bg === this.xbg && this.plot6bg === this.xbg && this.plot9bg === this.xbg) ||
-  //       (this.plot1bg === this.xbg && this.plot5bg === this.xbg && this.plot9bg === this.xbg) ||
-  //       (this.plot3bg === this.xbg && this.plot5bg === this.xbg && this.plot7bg === this.xbg)) {
-  //       if (this.sign === "x") {
-  //         this.plot1 = this.plot2 = this.plot3 = this.plot4 = this.plot5 = this.plot6 = this.plot7 = this.plot8 = this.plot9 = true;
-  //         alert("you Won!!!");
-  //       } else {
-  //         this.plot1 = this.plot2 = this.plot3 = this.plot4 = this.plot5 = this.plot6 = this.plot7 = this.plot8 = this.plot9 = true;
-  //         alert(this.opponent + " Won!!!");
-  //       }
-  //     }
-  //     else if (
-  //       (this.plot1bg === this.obg && this.plot2bg === this.obg && this.plot3bg === this.obg) || 
-  //       (this.plot4bg === this.obg && this.plot5bg === this.obg && this.plot6bg === this.obg) || 
-  //       (this.plot7bg === this.obg && this.plot8bg === this.obg && this.plot9bg === this.obg) ||
-  //       (this.plot1bg === this.obg && this.plot4bg === this.obg && this.plot7bg === this.obg) ||
-  //       (this.plot2bg === this.obg && this.plot5bg === this.obg && this.plot8bg === this.obg) ||
-  //       (this.plot3bg === this.obg && this.plot6bg === this.obg && this.plot9bg === this.obg) ||
-  //       (this.plot1bg === this.obg && this.plot5bg === this.obg && this.plot9bg === this.obg) ||
-  //       (this.plot3bg === this.obg && this.plot5bg === this.obg && this.plot7bg === this.obg)) {
-  //       if (this.sign === "o") {
-  //         this.plot1 = this.plot2 = this.plot3 = this.plot4 = this.plot5 = this.plot6 = this.plot7 = this.plot8 = this.plot9 = true;
-  //         alert("you Won!!!");
-  //       } else {
-  //         this.plot1 = this.plot2 = this.plot3 = this.plot4 = this.plot5 = this.plot6 = this.plot7 = this.plot8 = this.plot9 = true;
-  //         alert(this.opponent + " Won!!!");
-  //       }
-  //     } else if (this.plot1 && this.plot2 && this.plot3 && this.plot4 && this.plot5 && this.plot6 && this.plot7 && this.plot8 && this.plot9 === true) {
-  //         alert("Game Draw!!!");
-  //       }
-      
-  // }
-
-  $(id: string) {
-    return document.getElementsByClassName(id);
+  backgroundCheck() {
+    if (this.turn === "x") {
+      return this.xbg;
+    }
+    else {
+      return this.obg;
+    }
   }
+
+  nextTurnCheck() {
+    if (this.isOpponentComputer && this.opponentSign === this.turn) {
+      this.computerMove();
+    }
+}
+
+  computerMove() {
+    let index = this.randomNum();
+    if (!this.gameBoardAttr[index].fieldStatus) {
+      this.action(this.gameBoardAttr[index])
+    } else {
+      this.computerMove();
+    }
+  }
+
+  // checking for a win situation
+  winSituationCheck() {
+    let winSituation = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 6, 9],
+      [1, 5, 9],
+      [3, 5, 7],
+    ]
+    for(let i = 0; i < 8; i++) {
+      let [a, b ,c] = winSituation[i];
+      if(this.gameBoardAttr[a - 1].fieldBackground === this.gameBoardAttr[b - 1].fieldBackground && 
+        this.gameBoardAttr[a - 1].fieldBackground === this.gameBoardAttr[c - 1].fieldBackground &&
+        this.gameBoardAttr[a - 1].fieldBackground != ''){
+          this.isWinner = true;
+          this.winnerSide = this.gameBoardAttr[a - 1].fieldBackground;
+        }
+    }
+  }
+
+  gameStatusCheck() {
+    this.winSituationCheck();
+    if (this.isWinner) {
+//  Disabling the remaining board fields
+      for (let i = 0; i < 9; i++){
+        this.gameBoardAttr[i].fieldStatus = true;
+      }
+      if (this.winnerSide === this.xbg) {
+        if (this.playerSign === "x") {
+          alert("You won!!!");
+        } else {
+          alert(this.opponentName + " won!!!");
+        }
+      } else {
+        if (this.playerSign === "o") {
+          alert("You won!!!");
+        } else {
+          alert(this.opponentName + " won!!!");
+        }
+      }
+    } else {
+      if (this.numberOfMoves === 9) {
+        alert("Draw !!!")
+      }
+    }
+  }
+
   randomNum(): number {
-    return Math.floor(Math.random() * 9) + 1;
+    return Math.floor(Math.random() * 8);
   }
 
   turnToggle() {
@@ -284,10 +183,4 @@ export class FieldAttr {
   fieldName: string = "plot";
   fieldBackground: string = '';
   fieldStatus: boolean = false;
-
-  // constructor (fieldName: string, fieldBackground: string, fieldStatus: boolean) {
-  //   this.fieldName = fieldName;
-  //   this.fieldBackgroud = fieldBackground;
-  //   this.fieldStatus = fieldStatus;
-  // }
 }

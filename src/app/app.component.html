@@ -52,36 +52,36 @@
 
   <div *ngIf="settings" class="settings" >
     <span>Game Setting</span><br />
-    <input type="radio" name="player" value="Computer" checked (change)="gameSetting($event)"> 1 player |
-    <input type="radio" name="player" value="Player 2" (change)="gameSetting($event)"> 2 player<br />
+    <input type="radio" name="player decider" value="Computer" checked (change)="gameSetting($event)"> 1 player |
+    <input type="radio" name="player decider" value="Player 2" (change)="gameSetting($event)"> 2 player<br />
     Choose side: 
     <input type="radio" name="sign" value="x" checked (change)="gameSetting($event)"> X |
     <input type="radio" name="sign" value="o" (change)="gameSetting($event)"> O<br />
     Who Starts:
     <input type="radio" name="turn" value="x" checked (change)="gameSetting($event)"> X |
     <input type="radio" name="turn" value="o" (change)="gameSetting($event)"> O<br />
-    <button type="button" value="start" (click)="initializingame($event)">Start</button>
+    <button type="button" name="start" value="start" (click)="initializinGame($event)">Start</button>
   </div>
 
-  <div *ngIf="settings" class="game-screen" >
+  <div *ngIf="!settings" class="game-screen" >
     <div class="scoreboard">
-      <span class="sub-scoreboard-left" [style.background-color]="turn === sign ? 'lightskyblue' : 'white'">Palyer 1 <br />{{sign}}</span>
-      <span class="sub-scoreboard-right" [style.background-color]="turn === sign ? 'white' : 'lightskyblue'">{{opponent}} <br />{{sign2}}</span>
+      <span class="sub-scoreboard-left" [style.background-color]="turn === playerSign ? 'lightskyblue' : 'white'">Palyer 1 <br />{{playerSign}}</span>
+      <span class="sub-scoreboard-right" [style.background-color]="turn === playerSign ? 'white' : 'lightskyblue'">{{opponentName}} <br />{{opponentSign}}</span>
     </div>
     <div class="game-board-src">
       <span class="game-board" >
         <button 
         *ngFor="let field of gameBoardAttr" 
         name="{{field.fieldName}}" 
-        style.background-image="{{field.fieldBackground}}" 
+        [style.background-image]="field.fieldBackground" 
         class="button" 
         [disabled]="field.fieldStatus ? true : false" 
-        (click)="action(field.fieldName)"
+        (click)="action(field)"
         ></button>
       </span>
     </div>
     <div class="restart">
-      <button type="button" value="exit" (click)="initializingame($event)">exit</button>
+      <button type="button" name="exit" value="exit" (click)="initializinGame($event)">exit</button>
     </div>
   </div>
 
